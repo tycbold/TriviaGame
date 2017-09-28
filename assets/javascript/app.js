@@ -1,6 +1,6 @@
 // Title page
 
-$("#opening-title").html("<h1>Tricky Trivia!</h1>");
+$("#opening-title").html("<h1>Tony Awards Trivia!</h1>");
 $("#rules").html("<p>Answer each multiple choice or true/false question as quickly as you can. Don't let the timer run out!</p>");
 
 // Variables
@@ -12,6 +12,8 @@ var firstDone = false;
 var secondDone = false;
 var thirdDone = false;
 var fourthDone = false;
+var fifthDone = false;
+var resultsDone = false;
 var radioAnswer;
 
 // Timer countdown function
@@ -61,6 +63,12 @@ var questionFour = {
 	question: "Which show currently holds the record for most Tony wins?",
 	answers: ["Hamilton", "The Book of Mormon", "The Producers", "Hairspray"],
 	correctAnswer: "The Producers"
+};
+
+var questionFive = {
+	question: "Which show currently holds the record as the longest-running Broadway revival?",
+	answers: ["Chicago", "The Phantom of the Opera", "Les Miserables", "Wicked"],
+	correctAnswer: "Chicago"
 };
 
 // Question functions
@@ -216,6 +224,45 @@ function questionOneform (){
 	$(".game").append(timeCount);
 
 	// create button
+	nextPage.text("Next Question");
+	nextPage.addClass("next-page button");
+	$(".game").append(nextPage);
+
+	next();
+
+}
+
+// // Question three
+	function questionFiveform() {
+		fifthDone = true;
+		var triviaQuestion = $("<div>");
+		var nextPage = $("<button>");
+		var timeCount = $("<div>")
+		$(".game").empty();
+		triviaQuestion.addClass("question");
+		triviaQuestion.text(questionFive.question);
+		$(".game").append(triviaQuestion);
+
+	// populate answers
+	for (var i = 0; i < questionFive.answers.length; i++) {
+		var triviaAnswers = $("<input>");
+		var label = $("<label>");
+		triviaAnswers.addClass("answers");
+		triviaAnswers.attr("value", questionThree.answers[i]);
+		triviaAnswers.attr("type", "radio");
+		triviaAnswers.attr("name", "answerThree");
+		label.attr("for", "answers");
+		label.text(questionFive.answers[i]);
+		$(".game").append(triviaAnswers);
+		$(triviaAnswers).after(label);
+	}
+
+	// create timer
+	timeCount.html(timer);
+	timeCount.addClass("timer");
+	$(".game").append(timeCount);
+
+	// create button
 	nextPage.text("Finish Quiz!");
 	nextPage.addClass("next-page button");
 	$(".game").append(nextPage);
@@ -226,8 +273,10 @@ function questionOneform (){
 
 	// Results page
 	function results(){
+		resultsDone = true;
 		var answerCorrect = $("<div>");
 		var answerIncorrect = $("<div>");
+		var thanks = $("<div>");
 		$(".game").empty();
 		answerCorrect.addClass("correct");
 		answerCorrect.html("<h3>Correct Answers: " + correct + "</h3>")
@@ -235,15 +284,41 @@ function questionOneform (){
 		answerIncorrect.addClass("incorrect");
 		answerIncorrect.html("<h3>Incorrect Answers: " + incorrect + "</h3>")
 		$(".game").append(answerIncorrect);
+		thanks.addClass("thanks");
+		thanks.html("<h3>Thanks for playing!</h3>");
+		$(".game").append(thanks);
+
+
+		next();
 	}
+
+	function startOver (){
+
+		// $(".game").empty();
+	
+		var timer = 10;
+		var correct = 0;
+		var incorrect = 0;
+		var firstDone = false;
+		var secondDone = false;
+		var thirdDone = false;
+		var fourthDone = false;
+		// resetTimer();
+
+		// questionOneform();
+
+}
 
 // Next page button and if statements
 function next () {
 	$(".next-page").on("click", function(){
 
-		if (firstDone && secondDone && thirdDone && fourthDone) {
+		if (resultsDone) {
+			startOver();
+		}
+		else if (fifthDone) {
 			radioAnswer = $("input[name=answerFour]:checked").val();
-			if (radioAnswer == "The Producers"){
+			if (radioAnswer == "Chicago"){
 				correct++;
 			}
 			else {
@@ -251,7 +326,18 @@ function next () {
 			}
 			results();
 		}
-		else if (firstDone && secondDone && thirdDone && !fourthDone) {
+		else if (fourthDone) {
+			radioAnswer = $("input[name=answerFour]:checked").val();
+			if (radioAnswer == "The Producers"){
+				correct++;
+			}
+			else {
+				incorrect++;
+			}
+			resetTimer();
+			questionFiveform();
+		}
+		else if (thirdDone) {
 			radioAnswer = $("input[name=answerThree]:checked").val();
 			if (radioAnswer == "False"){
 				correct++;
@@ -262,7 +348,7 @@ function next () {
 			resetTimer();
 			questionFourform();
 		}
-		else if (firstDone && secondDone && !thirdDone && !fourthDone) {
+		else if (secondDone) {
 			radioAnswer = $("input[name=answerTwo]:checked").val();
 			if (radioAnswer == "Audra McDonald"){
 				correct++;
@@ -273,7 +359,7 @@ function next () {
 			resetTimer();
 			questionThreeform();
 		}
-		else if (firstDone && !secondDone && !thirdDone && !fourthDone) {
+		else if (firstDone) {
 			radioAnswer = $("input[name=answerOne]:checked").val();
 			if (radioAnswer == "June"){
 				correct++;
@@ -291,7 +377,6 @@ function next () {
 
 questionOneform();
 
-if (timer == 0) {
-	next();
-}
+
+
 

@@ -28,21 +28,15 @@ label {
 }
 
 #opening-title {
-	font-size: 60px;
+	font-size: 70px;
+	font-family: 'Fontdiner Swanky', cursive;
+	margin-top: 30px;
 }
 
 #rules {
 	font-size: 22px;
 	line-height: 1.3em;
-}
-
-.start-game {
-	/*width: 100px;
-	padding: 10px;
-	text-align: center;
-	background-color: black;
-	color: white;
-	font-size: 16px;*/
+	margin-bottom: 100px; 
 }
 
 input {
@@ -68,4 +62,11 @@ input {
 
 .correct, .incorrect {
 	padding: 20px;
+}
+
+.thanks {
+	font-family: 'Fontdiner Swanky', cursive;
+	font-size: 60px;
+	padding:  40px;
+
 }
