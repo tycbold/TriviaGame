@@ -1,7 +1,14 @@
+$( document ).ready(function() {
+
 // Title page
 
 $("#opening-title").html("<h1>Tony Awards Trivia!</h1>");
 $("#rules").html("<p>Answer each multiple choice or true/false question as quickly as you can. Don't let the timer run out!</p>");
+
+// Audio files
+
+var boo = new Audio("boo.wav");
+var applause = new Audio("applause.wav");
 
 // Variables
 
@@ -13,13 +20,14 @@ var secondDone = false;
 var thirdDone = false;
 var fourthDone = false;
 var fifthDone = false;
+var sixthDone = false;
+var seventhDone = false;
 var resultsDone = false;
 var radioAnswer;
 
 // Timer countdown function
 
 var countingDown;
-
 function run () {
 	countingDown = setInterval(countdown, 1000);
 }
@@ -39,6 +47,46 @@ function resetTimer (){
 	run();
 }
 
+// Generate questions
+function generateQuestion(questionObject){
+	var triviaQuestion = $("<div>");
+	triviaQuestion.addClass("question");
+	triviaQuestion.text(questionObject.question);
+	$(".game").append(triviaQuestion);
+}
+
+// Generate answers
+function generateAnswers(questionObject, answerNumber){
+	for (var i = 0; i < questionObject.answers.length; i++) {
+		var triviaAnswers = $("<input>");
+		var label = $("<label>");
+		triviaAnswers.addClass("answers");
+		triviaAnswers.attr("value", questionObject.answers[i]);
+		triviaAnswers.attr("type", "radio");
+		triviaAnswers.attr("name", answerNumber);
+		label.attr("for", "answers");
+		label.text(questionObject.answers[i]);
+		$(".game").append(triviaAnswers);
+		$(triviaAnswers).after(label);
+	}
+}
+
+// Generate timer function
+function generateTimer (){
+	var timeCount = $("<div>")
+	timeCount.html(timer);
+	timeCount.addClass("timer");
+	$(".game").append(timeCount);
+}
+
+// Generate next button function
+function generateNextbutton(title){
+	var nextPage = $("<button>");
+	nextPage.text(title);
+	nextPage.addClass("next-page button");
+	$(".game").append(nextPage);
+}
+
 // Question objects (arrays)
 
 var questionOne = {
@@ -49,7 +97,7 @@ var questionOne = {
 
 var questionTwo = {
 	question: "Which actress currently holds the record for most Tonys in an acting category?",
-	answers: ["Patti LuPone", "Audra McDonald", "Angela Lansbury", "Meryl Streep"],
+	answers: ["Sutton Foster", "Audra McDonald", "Angela Lansbury", "Meryl Streep"],
 	correctAnswer: "Audra McDonald"
 };
 
@@ -71,241 +119,132 @@ var questionFive = {
 	correctAnswer: "Chicago"
 };
 
+var questionSix = {
+	question: "How many ties have there been in Tonys history?",
+	answers: ["4", "7", "1", "10"],
+	correctAnswer: "10"
+};
+
+var questionSeven = {
+	question: "Angela Lansbury, Tyne Daly, and Patti LuPone have all won Tony Awards for the leading role in which show?",
+	answers: ["Anything Goes", "Gypsy", "Sweeney Todd", "Master Class"],
+	correctAnswer: "Gypsy"
+}
+
 // Question functions
 
 // Question one
 function questionOneform (){
 	$(".start-game").on("click", function(){
 		firstDone = true;
-		var triviaQuestion = $("<div>");
-		var nextPage = $("<button>");
-		var timeCount = $("<div>")
 		$(".game").empty();
-		triviaQuestion.addClass("question");
-		triviaQuestion.text(questionOne.question);
-		$(".game").append(triviaQuestion);
 
-	// populate answers
-	for (var i = 0; i < questionOne.answers.length; i++) {
-		var triviaAnswers = $("<input>");
-		var label = $("<label>");
-		triviaAnswers.addClass("answers");
-		triviaAnswers.attr("value", questionOne.answers[i]);
-		triviaAnswers.attr("type", "radio");
-		triviaAnswers.attr("name", "answerOne");
-		label.attr("for", "answers");
-		label.text(questionOne.answers[i]);
-		$(".game").append(triviaAnswers);
-		$(triviaAnswers).after(label);
-	}
+	generateQuestion(questionOne);
+	generateAnswers(questionOne, "answerOne");
 
-	// create timer
-	timeCount.html(timer);
-	timeCount.addClass("timer");
-	$(".game").append(timeCount);
+	generateTimer();
 	run();
-
-	// create button
-	nextPage.text("Next Question");
-	nextPage.addClass("next-page button");
-	$(".game").append(nextPage);
-
+	generateNextbutton("Next Question");
 	next();
 
 });
 }
 
-		// // Question two
-		function questionTwoform() {
-			secondDone = true;
-			var triviaQuestion = $("<div>");
-			var nextPage = $("<button>");
-			var timeCount = $("<div>")
-			$(".game").empty();
-			triviaQuestion.addClass("question");
-			triviaQuestion.text(questionTwo.question);
-			$(".game").append(triviaQuestion);
+// Question two
+function questionTwoform() {
+	secondDone = true;
+	$(".game").empty();
+	generateQuestion(questionTwo);
+	generateAnswers(questionTwo, "answerTwo");
+	generateTimer();
+	generateNextbutton("Next Question");
+	next();
 
-	// populate answers
-	for (var i = 0; i < questionTwo.answers.length; i++) {
-		var triviaAnswers = $("<input>");
-		var label = $("<label>");
-		triviaAnswers.addClass("answers");
-		triviaAnswers.attr("value", questionTwo.answers[i]);
-		triviaAnswers.attr("type", "radio");
-		triviaAnswers.attr("name", "answerTwo");
-		label.attr("for", "answers");
-		label.text(questionTwo.answers[i]);
-		$(".game").append(triviaAnswers);
-		$(triviaAnswers).after(label);
-	}
-
-	// create timer
-	timeCount.html(timer);
-	timeCount.addClass("timer");
-	$(".game").append(timeCount);
-
-	// create button
-	nextPage.text("Next Question");
-	nextPage.addClass("next-page button");
-	$(".game").append(nextPage);
-
+}
+// Question three
+function questionThreeform() {
+	thirdDone = true;
+	$(".game").empty();
+	generateQuestion(questionThree);
+	generateAnswers(questionThree, "answerThree");
+	generateTimer();
+	generateNextbutton("Next Question");
 	next();
 
 }
 
-	// // Question three
-	function questionThreeform() {
-		thirdDone = true;
-		var triviaQuestion = $("<div>");
-		var nextPage = $("<button>");
-		var timeCount = $("<div>")
-		$(".game").empty();
-		triviaQuestion.addClass("question");
-		triviaQuestion.text(questionThree.question);
-		$(".game").append(triviaQuestion);
-
-	// populate answers
-	for (var i = 0; i < questionThree.answers.length; i++) {
-		var triviaAnswers = $("<input>");
-		var label = $("<label>");
-		triviaAnswers.addClass("answers");
-		triviaAnswers.attr("value", questionThree.answers[i]);
-		triviaAnswers.attr("type", "radio");
-		triviaAnswers.attr("name", "answerThree");
-		label.attr("for", "answers");
-		label.text(questionThree.answers[i]);
-		$(".game").append(triviaAnswers);
-		$(triviaAnswers).after(label);
-	}
-
-	// create timer
-	timeCount.html(timer);
-	timeCount.addClass("timer");
-	$(".game").append(timeCount);
-
-	// create button
-	nextPage.text("Next Question");
-	nextPage.addClass("next-page button");
-	$(".game").append(nextPage);
+// Question four 
+function questionFourform (){
+	fourthDone = true;
+	$(".game").empty();
+	generateQuestion(questionFour);
+	generateAnswers(questionFour, "answerFour");
+	generateTimer();
+	generateNextbutton("Next Question");
 
 	next();
-
 }
 
-	// // Question four 
-	function questionFourform (){
-		fourthDone = true;
-		var triviaQuestion = $("<div>");
-		var nextPage = $("<button>");
-		var timeCount = $("<div>")
-		$(".game").empty();
-		triviaQuestion.addClass("question");
-		triviaQuestion.text(questionFour.question);
-		$(".game").append(triviaQuestion);
-
-	// populate answers
-	for (var i = 0; i < questionFour.answers.length; i++) {
-		var triviaAnswers = $("<input>");
-		var label = $("<label>");
-		triviaAnswers.addClass("answers");
-		triviaAnswers.attr("value", questionFour.answers[i]);
-		triviaAnswers.attr("type", "radio");
-		triviaAnswers.attr("name", "answerFour");
-		label.attr("for", "answers");
-		label.text(questionFour.answers[i]);
-		$(".game").append(triviaAnswers);
-		$(triviaAnswers).after(label);
-	}
-
-	// create timer
-	timeCount.html(timer);
-	timeCount.addClass("timer");
-	$(".game").append(timeCount);
-
-	// create button
-	nextPage.text("Next Question");
-	nextPage.addClass("next-page button");
-	$(".game").append(nextPage);
+// Question five
+function questionFiveform() {
+	fifthDone = true;
+	$(".game").empty();
+	generateQuestion(questionFive);
+	generateAnswers(questionFive, "answerFive");
+	generateTimer();
+	generateNextbutton("Next Question");
 
 	next();
-
 }
 
-// // Question three
-	function questionFiveform() {
-		fifthDone = true;
-		var triviaQuestion = $("<div>");
-		var nextPage = $("<button>");
-		var timeCount = $("<div>")
-		$(".game").empty();
-		triviaQuestion.addClass("question");
-		triviaQuestion.text(questionFive.question);
-		$(".game").append(triviaQuestion);
-
-	// populate answers
-	for (var i = 0; i < questionFive.answers.length; i++) {
-		var triviaAnswers = $("<input>");
-		var label = $("<label>");
-		triviaAnswers.addClass("answers");
-		triviaAnswers.attr("value", questionThree.answers[i]);
-		triviaAnswers.attr("type", "radio");
-		triviaAnswers.attr("name", "answerThree");
-		label.attr("for", "answers");
-		label.text(questionFive.answers[i]);
-		$(".game").append(triviaAnswers);
-		$(triviaAnswers).after(label);
-	}
-
-	// create timer
-	timeCount.html(timer);
-	timeCount.addClass("timer");
-	$(".game").append(timeCount);
-
-	// create button
-	nextPage.text("Finish Quiz!");
-	nextPage.addClass("next-page button");
-	$(".game").append(nextPage);
+// Question six
+function questionSixform() {
+	sixthDone = true;
+	$(".game").empty();
+	generateQuestion(questionSix);
+	generateAnswers(questionSix, "answerSix");
+	generateTimer();
+	generateNextbutton("Next Question");
 
 	next();
-
 }
 
-	// Results page
-	function results(){
-		resultsDone = true;
-		var answerCorrect = $("<div>");
-		var answerIncorrect = $("<div>");
-		var thanks = $("<div>");
-		$(".game").empty();
-		answerCorrect.addClass("correct");
-		answerCorrect.html("<h3>Correct Answers: " + correct + "</h3>")
-		$(".game").append(answerCorrect);
-		answerIncorrect.addClass("incorrect");
-		answerIncorrect.html("<h3>Incorrect Answers: " + incorrect + "</h3>")
-		$(".game").append(answerIncorrect);
-		thanks.addClass("thanks");
-		thanks.html("<h3>Thanks for playing!</h3>");
-		$(".game").append(thanks);
+// Question seven
+function questionSevenform() {
+	seventhDone = true;
+	$(".game").empty();
+	generateQuestion(questionSeven);
+	generateAnswers(questionSeven, "answerSeven");
+	generateTimer();
+	generateNextbutton("Finish Quiz!");
 
+	next();
+}
 
-		next();
+// Results page
+function results(){
+	resultsDone = true;
+	var answerCorrect = $("<div>");
+	var answerIncorrect = $("<div>");
+	var thanks = $("<div>");
+	$(".game").empty();
+
+	answerCorrect.addClass("correct");
+	answerCorrect.html("<h3>Correct Answers: " + correct + "</h3>")
+	$(".game").append(answerCorrect);
+	answerIncorrect.addClass("incorrect");
+	answerIncorrect.html("<h3>Incorrect Answers: " + incorrect + "</h3>")
+	$(".game").append(answerIncorrect);
+	thanks.addClass("thanks");
+	thanks.html("<h3>Thanks for playing!</h3>");
+	$(".game").append(thanks);
+
+	if (correct > 3) {
+		applause.play();
 	}
-
-	function startOver (){
-
-		// $(".game").empty();
-	
-		var timer = 10;
-		var correct = 0;
-		var incorrect = 0;
-		var firstDone = false;
-		var secondDone = false;
-		var thirdDone = false;
-		var fourthDone = false;
-		// resetTimer();
-
-		// questionOneform();
+	else {
+		boo.play();
+	}
 
 }
 
@@ -313,12 +252,9 @@ function questionOneform (){
 function next () {
 	$(".next-page").on("click", function(){
 
-		if (resultsDone) {
-			startOver();
-		}
-		else if (fifthDone) {
-			radioAnswer = $("input[name=answerFour]:checked").val();
-			if (radioAnswer == "Chicago"){
+		if (seventhDone) {
+			radioAnswer = $("input[name=answerSeven]:checked").val();
+			if (radioAnswer == questionSeven.correctAnswer){
 				correct++;
 			}
 			else {
@@ -326,9 +262,31 @@ function next () {
 			}
 			results();
 		}
+		else if (sixthDone) {
+			radioAnswer = $("input[name=answerSix]:checked").val();
+			if (radioAnswer == questionSix.correctAnswer){
+				correct++;
+			}
+			else {
+				incorrect++;
+			}
+			resetTimer();
+			questionSevenform();
+		}
+		else if (fifthDone) {
+			radioAnswer = $("input[name=answerFive]:checked").val();
+			if (radioAnswer == questionFive.correctAnswer){
+				correct++;
+			}
+			else {
+				incorrect++;
+			}
+			resetTimer();
+			questionSixform();
+		}
 		else if (fourthDone) {
 			radioAnswer = $("input[name=answerFour]:checked").val();
-			if (radioAnswer == "The Producers"){
+			if (radioAnswer == questionFour.correctAnswer){
 				correct++;
 			}
 			else {
@@ -339,7 +297,7 @@ function next () {
 		}
 		else if (thirdDone) {
 			radioAnswer = $("input[name=answerThree]:checked").val();
-			if (radioAnswer == "False"){
+			if (radioAnswer == questionThree.correctAnswer){
 				correct++;
 			}
 			else {
@@ -350,7 +308,7 @@ function next () {
 		}
 		else if (secondDone) {
 			radioAnswer = $("input[name=answerTwo]:checked").val();
-			if (radioAnswer == "Audra McDonald"){
+			if (radioAnswer == questionTwo.correctAnswer){
 				correct++;
 			}
 			else {
@@ -361,7 +319,7 @@ function next () {
 		}
 		else if (firstDone) {
 			radioAnswer = $("input[name=answerOne]:checked").val();
-			if (radioAnswer == "June"){
+			if (radioAnswer == questionOne.correctAnswer){
 				correct++;
 			}
 			else {
@@ -370,13 +328,14 @@ function next () {
 			resetTimer();
 			questionTwoform();
 		}
-	});
+	
+});
 }
 
 // Call first question function
 
 questionOneform();
 
-
+});
 
 
